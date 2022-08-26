@@ -61,12 +61,12 @@ export class StepsListComponent implements DoCheck, OnInit {
   }
 
   add(): void {
-    this.router.navigate(["/flow-edit"]);
+    this.router.navigate(["/steps-edit"]);
   }
 
   view(): void {
     const selectedRows = this.agGrid.api.getSelectedRows();
-    this.router.navigate(['/flow-edit', selectedRows[0].ID]);
+    this.router.navigate(['/steps-edit', selectedRows[0].ID]);
   }
 
   getSteps(): void {

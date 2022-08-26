@@ -1,0 +1,82 @@
+<div fxLayout="row">
+  <div fxFlex.gt-sm="100%">
+    <mat-card>
+      <mat-card-content>
+        <mat-card-title>Step</mat-card-title>
+
+        <section>
+          <div class="example-button-row">
+            <button mat-raised-button color="accent" (click)="back()">
+              << Back
+            </button>
+          </div>
+        </section>
+
+        <form [formGroup]="formGroup">
+          <div class="example-container">
+            <div style="display: flex; align-items: center">
+              <div style="width: 50%; text-align: left">
+                <h3>Step Info.</h3>
+              </div>
+            </div>
+
+            <mat-form-field class="example-full-width" appearance="fill">
+              <mat-label>Name</mat-label>
+              <input matInput value="" formControlName="Name" />
+            </mat-form-field>
+            <div
+              *ngIf="Name?.invalid && (Name?.dirty || Name?.touched)"
+              class="alert-danger"
+            >
+              <div *ngIf="Name?.errors.required">Name is required.</div>
+            </div>
+
+            <mat-form-field class="example-full-width" appearance="fill">
+              <mat-label>Type</mat-label>
+              <input matInput value="" formControlName="Type" />
+            </mat-form-field>
+            <div
+              *ngIf="Type?.invalid && (Type?.dirty || Type?.touched)"
+              class="alert-danger"
+            >
+              <div *ngIf="Type?.errors.required">Type is required.</div>
+            </div>
+
+            <mat-form-field class="example-full-width" appearance="fill">
+              <mat-label>Hardware</mat-label>
+              <mat-select formControlName="HardwareID">
+                <mat-option
+                  *ngFor="let hardware of hardwares"
+                  [value]="hardware.ID"
+                >
+                  {{ hardware.Name }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field class="example-full-width" appearance="fill">
+              <mat-label>Setting 1</mat-label>
+              <input matInput formControlName="Setting1" />
+            </mat-form-field>
+
+            <mat-form-field class="example-full-width" appearance="fill">
+              <mat-label>Setting 2</mat-label>
+              <input matInput value="" formControlName="Setting2" />
+            </mat-form-field>
+
+            <div style="width: 50%; align-items: end; text-align: right">
+              <button
+                mat-raised-button
+                color="accent"
+                (click)="save()"
+                [disabled]="isSaveDisabled"
+              >
+                Save
+              </button>
+            </div>
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
