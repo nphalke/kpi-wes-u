@@ -1,0 +1,128 @@
+<div fxLayout="row">
+  <div fxFlex.gt-sm="100%">
+    <mat-card>
+      <mat-card-content>
+        <mat-card-title>Flow</mat-card-title>
+
+        <section>
+          <div class="example-button-row">
+            <button mat-raised-button color="accent" (click)="back()">
+              << Back
+            </button>
+          </div>
+        </section>
+
+        <div cdkDropListGroup>
+          <div class="example-container">
+            <h3>Steps</h3>
+
+            <div
+              id="cdk-steps"
+              style="overflow-y: scroll; height: 600px"
+              cdkDropList
+              [cdkDropListData]="steps"
+              class="example-list"
+              (cdkDropListDropped)="drop($event)"
+            >
+              <div
+                class="example-box"
+                *ngFor="let step of steps"
+                cdkDrag
+                [cdkDragDisabled]="isSaveDisabled"
+              >
+                {{ step.Name }}
+              </div>
+            </div>
+          </div>
+
+          <div class="example-container">
+            <div style="display: flex; align-items: center">
+              <div style="width: 50%; text-align: left">
+                <h3>Flow Steps <span style="color: red">*</span></h3>
+              </div>
+            </div>
+
+            <div
+              cdkDropList
+              [cdkDropListData]="flowSteps"
+              class="example-list"
+              (cdkDropListDropped)="drop($event)"
+            >
+              <div
+                class="example-box"
+                *ngFor="let flowStep of flowSteps; let i = index"
+                cdkDragLockAxis="y"
+                cdkDrag
+                [cdkDragDisabled]="isSaveDisabled"
+              >
+                <span style="color: darkslategray">
+                  <strong>Step {{ i + 1 }} : </strong>{{ flowStep.Name }}
+                </span>
+
+                <button
+                  mat-icon-button
+                  class="del-button"
+                  title="Remove Step from the Flow"
+                  (click)="removeFromWorkFlow(item, i)"
+                  [disabled]="isSaveDisabled"
+                >
+                  <mat-icon>delete</mat-icon>
+                </button>
+                <div>
+                  <ul class="list">
+                    <li><strong>Settings:</strong></li>
+                    <li *ngIf="flowStep.Setting1 && flowStep.Setting1 !== ''">
+                      {{ flowStep.Setting1 }}
+                    </li>
+                    <li *ngIf="flowStep.Setting2 && flowStep.Setting2 !== ''">
+                      {{ flowStep.Setting2 }}
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="example-container">
+            <div style="display: flex; align-items: center">
+              <div style="width: 50%; text-align: left">
+                <h3>Flow Info.</h3>
+              </div>
+              <div style="width: 50%; align-items: end; text-align: right">
+                <button
+                  mat-raised-button
+                  color="accent"
+                  (click)="save()"
+                  [disabled]="isSaveDisabled"
+                >
+                  Save
+                </button>
+              </div>
+            </div>
+
+            <mat-form-field class="example-full-width" appearance="fill">
+              <mat-label>Flow Name<span style="color: red">*</span></mat-label>
+              <input
+                matInput
+                value=""
+                [(ngModel)]="flowName"
+                [disabled]="isSaveDisabled"
+              />
+            </mat-form-field>
+            <mat-form-field class="example-full-width" appearance="fill">
+              <mat-label
+                >Strategy Name<span style="color: red">*</span></mat-label
+              >
+              <input
+                matInput
+                value=""
+                [(ngModel)]="strategyName"
+                [disabled]="isSaveDisabled"
+              />
+            </mat-form-field>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
