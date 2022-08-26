@@ -17,6 +17,10 @@ export const AppRoutes: Routes = [
         loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardModule)
       },
       {
+        path: 'steps-list',
+        loadChildren: () => import('./steps/steps-list/steps-list.module').then(m => m.StepsListModule)
+      },
+      {
         path: 'flow-list',
         loadChildren: () => import('./flow/flow-list/flow-list.module').then(m => m.FlowListModule)
       },

@@ -120,6 +120,16 @@
                 [disabled]="isSaveDisabled"
               />
             </mat-form-field>
+
+            <mat-form-field class="example-full-width" appearance="fill">
+              <mat-label>Flow Type<span style="color: red">*</span></mat-label>
+              <input
+                matInput
+                value=""
+                [(ngModel)]="flowType"
+                [disabled]="isSaveDisabled"
+              />
+            </mat-form-field>
           </div>
         </div>
       </mat-card-content>

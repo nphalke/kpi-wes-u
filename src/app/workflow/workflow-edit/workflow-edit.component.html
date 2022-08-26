@@ -49,7 +49,7 @@
                 cdkDrag
                 [cdkDragDisabled]="isSaveDisabled"
               >
-                <span style="color: black; font-size: 12pt">
+                <span style="color: black; font-size: 14pt">
                   <strong>Flow: </strong>{{ flow.Name }}
                 </span>
 
@@ -62,8 +62,13 @@
                 >
                   <mat-icon>delete</mat-icon>
                 </button>
-                <div style="color: black; font-size: 12pt">
-                  <strong>Strategy: </strong>{{ flow.StrategyName }}
+                <div style="color: black; font-size: 11pt">
+                  <span style="font-weight: 500"> Strategy: </span>
+                  {{ flow.StrategyName }}
+                </div>
+                <div style="color: black; font-size: 11pt">
+                  <span style="font-weight: 500"> Flow Type: </span>
+                  {{ flow.FlowType }}
                 </div>
 
                 <ul

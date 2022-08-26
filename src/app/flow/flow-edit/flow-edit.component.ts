@@ -25,6 +25,7 @@ export class FlowEditComponent {
   steps: any[] = [];
   flowName: string = "";
   strategyName: string = "";
+  flowType: string = "";
   flowSteps: any[] = [];
   horizontalPosition: MatSnackBarHorizontalPosition = "end";
   verticalPosition: MatSnackBarVerticalPosition = "top";
@@ -110,6 +111,7 @@ export class FlowEditComponent {
       const flow = {
         name: this.flowName,
         strategyName: this.strategyName,
+        flowType: this.flowType,
         flowSteps: [...this.flowSteps],
       };
       console.log("flow", flow);
@@ -159,6 +161,7 @@ export class FlowEditComponent {
       if (response) {
         this.flowName = response.data.Name;
         this.strategyName = response.data.StrategyName;
+        this.flowType = response.data.FlowType;
       }
     });
   }

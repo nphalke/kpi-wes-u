@@ -48,6 +48,7 @@ export class OrderEditComponent {
     this.formGroup = this.formBuilder.group({
       ID: [{ value: '', disabled: true }],
       OrderDateTime: ['', Validators.required],
+      OrderType: ['', Validators.required],
       CustomerName: ['', Validators.required],
       CustomerAddress: ['', Validators.required],
       ShippingDate: ['', Validators.required],
@@ -57,6 +58,7 @@ export class OrderEditComponent {
   }
 
   get OrderDateTime() { return this.formGroup?.get('OrderDateTime'); }
+  get OrderType() { return this.formGroup?.get('OrderType'); }
   get CustomerName() { return this.formGroup?.get('CustomerName'); }
   get CustomerAddress() { return this.formGroup?.get('CustomerAddress'); }
   get ShippingDate() { return this.formGroup?.get('ShippingDate'); }
@@ -119,6 +121,7 @@ export class OrderEditComponent {
         this.order = response.data;
         this.formGroup?.get('ID')?.setValue(this.order.ID);
         this.formGroup?.get('OrderDateTime')?.setValue(this.order.OrderDateTime);
+        this.formGroup?.get('OrderType')?.setValue(this.order.OrderType);
         this.formGroup?.get('CustomerName')?.setValue(this.order.CustomerName);
         this.formGroup?.get('CustomerAddress')?.setValue(this.order.CustomerAddress);
         this.formGroup?.get('ShippingDate')?.setValue(this.order.ShippingDate);

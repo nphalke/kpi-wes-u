@@ -2,14 +2,14 @@ import { Component, DoCheck, OnInit, ViewChild } from "@angular/core";
 import { Router } from "@angular/router";
 import { AgGridAngular } from "ag-grid-angular";
 import { ColDef, GridReadyEvent } from "ag-grid-community";
-import { FlowService } from "../Flow.service";
+import { StepsService } from "../steps.service";
 
 @Component({
-  selector: "wes-Flow-list",
-  templateUrl: "./flow-list.component.html",
-  styleUrls: ["./flow-list.component.css"],
+  selector: "wes-steps-list",
+  templateUrl: "./steps-list.component.html",
+  styleUrls: ["./steps-list.component.css"],
 })
-export class FLowListComponent implements DoCheck, OnInit {
+export class StepsListComponent implements DoCheck, OnInit {
   // Each Column Definition results in one Column.
   public columnDefs: ColDef[] = [
     {
@@ -18,9 +18,8 @@ export class FLowListComponent implements DoCheck, OnInit {
       //headerCheckboxSelection: true, // Enable select/unselect all feature
     },
     { field: "ID", resizable: true },
-    { field: "Name", resizable: true, headerName: "Flow Name" },
-    { field: "StrategyName", resizable: true },
-    { field: "FlowType", resizable: true }
+    { field: "Name", resizable: true },
+    { field: "Type", resizable: true }
   ];
 
   // DefaultColDef sets props common to all Columns
@@ -38,12 +37,12 @@ export class FLowListComponent implements DoCheck, OnInit {
 
   constructor(
     private router: Router,
-    private flowService: FlowService
+    private stepsService: StepsService
   ) {
   }
 
   ngOnInit() {
-    this.getFlows();
+    this.getSteps();
   }
 
   ngDoCheck() {
@@ -70,8 +69,8 @@ export class FLowListComponent implements DoCheck, OnInit {
     this.router.navigate(['/flow-edit', selectedRows[0].ID]);
   }
 
-  getFlows(): void {
-    this.flowService.getFlows().subscribe((response: any) => {
+  getSteps(): void {
+    this.stepsService.getSteps().subscribe((response: any) => {
       this.flows = response.data;
     });
   }

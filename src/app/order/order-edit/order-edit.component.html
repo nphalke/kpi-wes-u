@@ -20,6 +20,21 @@
             </mat-form-field>
 
             <mat-form-field class="form-element">
+              <mat-label>Order Type</mat-label>
+              <input matInput required formControlName="OrderType" />
+            </mat-form-field>
+            <div
+              *ngIf="
+                OrderType?.invalid && (OrderType?.dirty || OrderType?.touched)
+              "
+              class="alert-danger"
+            >
+              <div *ngIf="OrderType?.errors.required">
+                Order Type is required.
+              </div>
+            </div>
+
+            <mat-form-field class="form-element">
               <mat-label>Customer</mat-label>
               <input
                 matInput
@@ -44,7 +59,7 @@
               <mat-label> Customer Address </mat-label>
               <textarea
                 matInput
-                rows="3"
+                rows="2"
                 formControlName="CustomerAddress"
               ></textarea>
             </mat-form-field>
