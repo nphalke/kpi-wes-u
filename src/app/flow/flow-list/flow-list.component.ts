@@ -71,7 +71,6 @@ export class FLowListComponent implements DoCheck, OnInit {
 
   getFlows(): void {
     this.flowService.getFlows().subscribe((response: any) => {
-      console.log('response', response)
       this.flows = response.data;
     });
   }

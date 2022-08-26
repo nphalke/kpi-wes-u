@@ -146,6 +146,8 @@ export class FlowEditComponent {
           return {
             ID: item.ID,
             Name: item.StepName,
+            Setting1: item.Setting1,
+            Setting2: item.Setting2
           };
         });
       }
