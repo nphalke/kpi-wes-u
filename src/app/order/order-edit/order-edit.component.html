@@ -78,7 +78,7 @@
             <section *ngIf="!isOrderExecuted">
               <div class="example-button-row">
                 <button mat-raised-button color="accent" (click)="save()">
-                  Save
+                  Submit Order
                 </button>
               </div>
             </section>
@@ -139,8 +139,8 @@
 
             <mat-form-field class="example-full-width" appearance="fill">
               <mat-label>Item</mat-label>
-              <mat-select formControlName="ItemID">
-                <mat-option *ngFor="let item of items" [value]="item.ID">
+              <mat-select formControlName="InventoryID">
+                <mat-option *ngFor="let item of inventories" [value]="item.ID">
                   {{ item.Name }}
                 </mat-option>
               </mat-select>

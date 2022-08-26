@@ -6,7 +6,8 @@ import {
   MatSnackBarVerticalPosition,
 } from "@angular/material/snack-bar";
 import { OrderService } from "../order.service";
-import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import * as _moment from 'moment';
 
 @Component({
   selector: "wes-order-edit",
@@ -17,7 +18,7 @@ export class OrderEditComponent {
   formGroup: FormGroup | undefined;
   horizontalPosition: MatSnackBarHorizontalPosition = "end";
   verticalPosition: MatSnackBarVerticalPosition = "top";
-  items: any[] = [];
+  inventories: any[] = [];
   workFlow: any[] = [];
   order: any | undefined;
   isOrderExecuted: boolean = false;
@@ -31,7 +32,7 @@ export class OrderEditComponent {
   ) { }
 
   ngOnInit() {
-    this.getItems();
+    this.getInventory();
     this.createForm();
     this.route.paramMap.subscribe((params: ParamMap) => {
       // View Mode
@@ -52,7 +53,7 @@ export class OrderEditComponent {
       CustomerName: ['', Validators.required],
       CustomerAddress: ['', Validators.required],
       ShippingDate: ['', Validators.required],
-      ItemID: ['', Validators.required],
+      InventoryID: ['', Validators.required],
       Quantity: ['', Validators.required]
     });
   }
@@ -62,7 +63,7 @@ export class OrderEditComponent {
   get CustomerName() { return this.formGroup?.get('CustomerName'); }
   get CustomerAddress() { return this.formGroup?.get('CustomerAddress'); }
   get ShippingDate() { return this.formGroup?.get('ShippingDate'); }
-  get ItemID() { return this.formGroup?.get('ItemID'); }
+  get InventoryID() { return this.formGroup?.get('InventoryID'); }
   get Quantity() { return this.formGroup?.get('Quantity'); }
 
 
@@ -71,44 +72,21 @@ export class OrderEditComponent {
       return;
     }
 
-    console.log('    this.formGroup', this.formGroup?.valid)
-    console.log('    this.formGroup', this.formGroup)
-    // let message: string = "";
-    // if (this.flowName === "") {
-    //   message = "Flow Name is not defined";
-    // } else if (this.strategyName === "") {
-    //   message = "Strategy Name is not defined";
-    // } else if (this.flowSteps && this.flowSteps.length <= 0) {
-    //   message = "Flow is not defined";
-    // }
-    // if (message !== "") {
-    //   this._snackBar.open(message, "Error!", {
-    //     horizontalPosition: this.horizontalPosition,
-    //     verticalPosition: this.verticalPosition,
-    //     duration: 3000,
-    //   });
-    // } else {
-    //   //Save the flow
-    //   this.flowSteps = this.flowSteps.map((step, index) => {
-    //     return {
-    //       stepId: step.id,
-    //       stepOrder: index + 1,
-    //     };
-    //   });
-    //   const flow = {
-    //     name: this.flowName,
-    //     strategyName: this.strategyName,
-    //     flowSteps: [...this.flowSteps],
-    //   };
-    //   console.log("flow", flow);
-    //   message = "Flow saved succefully!";
-    //   this._snackBar.open(message, "", {
-    //     horizontalPosition: this.horizontalPosition,
-    //     verticalPosition: this.verticalPosition,
-    //     duration: 3000,
-    //   });
-    //   this.router.navigate(["/flow-list"]);
-    // }
+    const orderDateTime = new Date(this.formGroup.value.OrderDateTime);
+    const shippingDate = new Date(this.formGroup.value.ShippingDate);
+    const postData: any = this.formGroup.value;
+
+    postData.OrderDateTime = _moment(orderDateTime).format("YYYY/MM/DD HH:MM::SS")
+    postData.ShippingDate = _moment(shippingDate).format("YYYY/MM/DD HH:MM::SS")
+
+    this.orderService.saveOrder(this.formGroup.value).subscribe((res) => {
+      this.router.navigate(["/order-list"]);
+      this._snackBar.open('Order saved successfully!', "", {
+        horizontalPosition: this.horizontalPosition,
+        verticalPosition: this.verticalPosition,
+        duration: 3000,
+      });
+    });
   }
 
   back(): void {
@@ -125,15 +103,15 @@ export class OrderEditComponent {
         this.formGroup?.get('CustomerName')?.setValue(this.order.CustomerName);
         this.formGroup?.get('CustomerAddress')?.setValue(this.order.CustomerAddress);
         this.formGroup?.get('ShippingDate')?.setValue(this.order.ShippingDate);
-        this.formGroup?.get('ItemID')?.setValue(this.order.ItemID);
+        this.formGroup?.get('InventoryID')?.setValue(this.order.InventoryID);
         this.formGroup?.get('Quantity')?.setValue(this.order.Quantity);
       }
     });
   }
 
-  getItems(): void {
-    this.orderService.getItems().subscribe((response: any) => {
-      this.items = response.data;
+  getInventory(): void {
+    this.orderService.getInventory().subscribe((response: any) => {
+      this.inventories = response.data;
     });
   }
 }

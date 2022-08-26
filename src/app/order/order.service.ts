@@ -17,7 +17,11 @@ export class OrderService {
         return this.httpClient.get<any[]>(environment.url + 'orders/' + id);
     }
 
-    public getItems(): Observable<any[]> {
-        return this.httpClient.get<any[]>(environment.url + 'items');
+    public getInventory(): Observable<any[]> {
+        return this.httpClient.get<any[]>(environment.url + 'inventory');
+    }
+
+    public saveOrder(postData: any): Observable<any> {
+        return this.httpClient.post<any>(environment.url + 'order', postData);
     }
 }

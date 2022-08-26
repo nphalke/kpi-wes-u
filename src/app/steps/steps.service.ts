@@ -23,5 +23,4 @@ export class StepsService {
     public saveStep(postData: any): Observable<any> {
         return this.httpClient.post<any>(environment.url + 'step', postData);
     }
-
 }
