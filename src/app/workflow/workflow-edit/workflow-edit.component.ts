@@ -211,9 +211,6 @@ export class WorkflowEditComponent {
     this.workflowService.getStorageLocations().subscribe((response: any) => {
       if (response && response.data) {
         this.storageLocations = response.data;
-        // console.log('this.storageLocations', this.storageLocations)
-        // this.storageLocation = 'test'
-
       }
     });
   }
@@ -239,7 +236,7 @@ export class WorkflowEditComponent {
       this.workFlow = [];
       if (response) {
         this.workFlowName = response.data.Name;
-        this.storageLocation = response.data.ID;
+        //this.storageLocation = response.data.ID;
         response.data.WorkflowFlows.forEach((item: any) => {
           // get flow steps for each flow
           if (item.FlowID) {

@@ -8,6 +8,7 @@ import {
 import { OrderService } from "../order.service";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import * as _moment from 'moment';
+import { WorkflowService } from "src/app/workflow/workflow.service";
 
 @Component({
   selector: "wes-order-edit",
@@ -22,13 +23,15 @@ export class OrderEditComponent {
   workFlow: any[] = [];
   order: any | undefined;
   isOrderExecuted: boolean = false;
+  workFlowName: string = '';
 
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
     private _snackBar: MatSnackBar,
     private orderService: OrderService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private workflowService: WorkflowService
   ) { }
 
   ngOnInit() {
@@ -50,9 +53,9 @@ export class OrderEditComponent {
       ID: [{ value: '', disabled: true }],
       OrderDateTime: ['', Validators.required],
       OrderType: ['', Validators.required],
-      CustomerName: ['', Validators.required],
-      CustomerAddress: ['', Validators.required],
-      ShippingDate: ['', Validators.required],
+      // CustomerName: ['', Validators.required],
+      // CustomerAddress: ['', Validators.required],
+      ///ShippingDate: ['', Validators.required],
       InventoryID: ['', Validators.required],
       Quantity: ['', Validators.required]
     });
@@ -60,9 +63,9 @@ export class OrderEditComponent {
 
   get OrderDateTime() { return this.formGroup?.get('OrderDateTime'); }
   get OrderType() { return this.formGroup?.get('OrderType'); }
-  get CustomerName() { return this.formGroup?.get('CustomerName'); }
-  get CustomerAddress() { return this.formGroup?.get('CustomerAddress'); }
-  get ShippingDate() { return this.formGroup?.get('ShippingDate'); }
+  // get CustomerName() { return this.formGroup?.get('CustomerName'); }
+  // get CustomerAddress() { return this.formGroup?.get('CustomerAddress'); }
+  //get ShippingDate() { return this.formGroup?.get('ShippingDate'); }
   get InventoryID() { return this.formGroup?.get('InventoryID'); }
   get Quantity() { return this.formGroup?.get('Quantity'); }
 
@@ -73,11 +76,11 @@ export class OrderEditComponent {
     }
 
     const orderDateTime = new Date(this.formGroup.value.OrderDateTime);
-    const shippingDate = new Date(this.formGroup.value.ShippingDate);
+    //const shippingDate = new Date(this.formGroup.value.ShippingDate);
     const postData: any = this.formGroup.value;
 
     postData.OrderDateTime = _moment(orderDateTime).format("YYYY/MM/DD HH:MM::SS")
-    postData.ShippingDate = _moment(shippingDate).format("YYYY/MM/DD HH:MM::SS")
+    //postData.ShippingDate = _moment(shippingDate).format("YYYY/MM/DD HH:MM::SS")
 
     this.orderService.saveOrder(this.formGroup.value).subscribe((res) => {
       this.router.navigate(["/order-list"]);
@@ -100,11 +103,16 @@ export class OrderEditComponent {
         this.formGroup?.get('ID')?.setValue(this.order.ID);
         this.formGroup?.get('OrderDateTime')?.setValue(this.order.OrderDateTime);
         this.formGroup?.get('OrderType')?.setValue(this.order.OrderType);
-        this.formGroup?.get('CustomerName')?.setValue(this.order.CustomerName);
-        this.formGroup?.get('CustomerAddress')?.setValue(this.order.CustomerAddress);
-        this.formGroup?.get('ShippingDate')?.setValue(this.order.ShippingDate);
+        // this.formGroup?.get('CustomerName')?.setValue(this.order.CustomerName);
+        // this.formGroup?.get('CustomerAddress')?.setValue(this.order.CustomerAddress);
+        //this.formGroup?.get('ShippingDate')?.setValue(this.order.ShippingDate);
         this.formGroup?.get('InventoryID')?.setValue(this.order.InventoryID);
         this.formGroup?.get('Quantity')?.setValue(this.order.Quantity);
+
+        this.workFlowName = this.order.Name;
+        if (this.order.WorkflowID) {
+          this.getWorkflow(this.order.WorkflowID);
+        }
       }
     });
   }
@@ -112,6 +120,25 @@ export class OrderEditComponent {
   getInventory(): void {
     this.orderService.getInventory().subscribe((response: any) => {
       this.inventories = response.data;
+    });
+  }
+
+  getWorkflow(id: number): void {
+    this.workflowService.getWorkflow(id).subscribe((response: any) => {
+      this.workFlow = [];
+      if (response) {
+        this.workFlowName = response.data.Name;
+        //this.storageLocation = response.data.ID;
+        response.data.WorkflowFlows.forEach((item: any) => {
+          // get flow steps for each flow
+          if (item.FlowID) {
+            this.workflowService.getFlow(item.FlowID)
+              .subscribe((flowResponse: any) => {
+                this.workFlow.push(flowResponse.data)
+              });
+          }
+        });
+      }
     });
   }
 }

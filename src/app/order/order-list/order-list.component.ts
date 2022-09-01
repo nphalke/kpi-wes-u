@@ -18,10 +18,11 @@ export class OrderListComponent implements DoCheck, OnInit {
       checkboxSelection: true,
       //headerCheckboxSelection: true, // Enable select/unselect all feature
     },
-    { field: "ID", resizable: true },
+    { field: "ID", resizable: true, width: 10 },
     { field: "OrderDateTime", resizable: true, headerName: "Order Date" },
-    { field: "CustomerName", resizable: true },
-    { field: "ShippingDate", resizable: true }
+    { field: "OrderType", resizable: true },
+    //{ field: "CustomerName", resizable: true },
+    //{ field: "ShippingDate", resizable: true }
   ];
 
   // DefaultColDef sets props common to all Columns
@@ -73,7 +74,6 @@ export class OrderListComponent implements DoCheck, OnInit {
 
   getOrders(): void {
     this.orderService.getOrders().subscribe((response: any) => {
-      console.log('response', response)
       this.orders = response.data;
     });
   }

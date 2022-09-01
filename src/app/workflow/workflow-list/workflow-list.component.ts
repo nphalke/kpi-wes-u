@@ -17,9 +17,8 @@ export class WorkflowListComponent implements DoCheck, OnInit {
       checkboxSelection: true,
       //headerCheckboxSelection: true, // Enable select/unselect all feature
     },
-    { field: "ID", resizable: true },
-    { field: "Name", resizable: true, headerName: "Title" },
-    { field: "StorageLocationName", resizable: true, headerName: "Storage Location" }
+    { field: "ID", resizable: true, width: 10 },
+    { field: "Name", resizable: true, headerName: "Title" }
   ];
 
   // DefaultColDef sets props common to all Columns

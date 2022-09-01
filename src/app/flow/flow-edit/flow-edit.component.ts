@@ -101,7 +101,6 @@ export class FlowEditComponent {
       });
     } else {
       //Save the flow
-      console.log('this.flowSteps', this.flowSteps)
       this.flowSteps = this.flowSteps.map((step, index) => {
         return {
           stepId: step.ID,
@@ -114,8 +113,6 @@ export class FlowEditComponent {
         flowType: this.flowType,
         flowSteps: [...this.flowSteps],
       };
-      console.log("flow", flow);
-      console.log("flow", JSON.stringify(flow));
 
       this.flowService.saveFlow(flow).subscribe((res) => {
         message = "Flow saved succefully!";
@@ -149,7 +146,8 @@ export class FlowEditComponent {
             ID: item.ID,
             Name: item.StepName,
             Setting1: item.Setting1,
-            Setting2: item.Setting2
+            Setting2: item.Setting2,
+            HardwareModel: item.HardwareModel
           };
         });
       }

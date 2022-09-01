@@ -17,9 +17,9 @@ export class StepsListComponent implements DoCheck, OnInit {
       checkboxSelection: true,
       //headerCheckboxSelection: true, // Enable select/unselect all feature
     },
-    { field: "ID", resizable: true },
+    { field: "ID", resizable: true, width: 10 },
     { field: "Name", resizable: true },
-    { field: "Type", resizable: true }
+    //{ field: "Type", resizable: true }
   ];
 
   // DefaultColDef sets props common to all Columns

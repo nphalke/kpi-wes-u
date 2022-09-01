@@ -34,7 +34,16 @@
               </div>
             </div>
 
-            <mat-form-field class="form-element">
+            <mat-form-field class="example-full-width" appearance="fill">
+              <mat-label>Inventory</mat-label>
+              <mat-select formControlName="InventoryID">
+                <mat-option *ngFor="let item of inventories" [value]="item.ID">
+                  {{ item.Name }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <!-- <mat-form-field class="form-element">
               <mat-label>Customer</mat-label>
               <input
                 matInput
@@ -53,9 +62,9 @@
               <div *ngIf="CustomerName?.errors.required">
                 Customer is required.
               </div>
-            </div>
+            </div> -->
 
-            <mat-form-field class="form-element">
+            <!-- <mat-form-field class="form-element">
               <mat-label> Customer Address </mat-label>
               <textarea
                 matInput
@@ -73,7 +82,7 @@
               <div *ngIf="CustomerAddress?.errors.required">
                 Customer Address is required.
               </div>
-            </div>
+            </div> -->
 
             <section *ngIf="!isOrderExecuted">
               <div class="example-button-row">
@@ -111,7 +120,7 @@
               </div>
             </div>
 
-            <mat-form-field>
+            <!-- <mat-form-field>
               <mat-label>Shipping Date</mat-label>
               <input
                 matInput
@@ -135,16 +144,16 @@
               <div *ngIf="ShippingDate?.errors.required">
                 Shipping Date is required.
               </div>
-            </div>
+            </div> -->
 
-            <mat-form-field class="example-full-width" appearance="fill">
-              <mat-label>Item</mat-label>
+            <!-- <mat-form-field class="example-full-width" appearance="fill">
+              <mat-label>Inventory</mat-label>
               <mat-select formControlName="InventoryID">
                 <mat-option *ngFor="let item of inventories" [value]="item.ID">
                   {{ item.Name }}
                 </mat-option>
               </mat-select>
-            </mat-form-field>
+            </mat-form-field> -->
 
             <mat-form-field class="form-element">
               <mat-label>Quantity</mat-label>
@@ -166,10 +175,20 @@
             </div>
           </div>
 
-          <div class="example-container" *ngIf="isOrderExecuted">
+          <div
+            class="example-container"
+            *ngIf="isOrderExecuted && workFlowName !== ''"
+          >
             <div style="display: flex; align-items: center">
-              <div style="width: 50%; text-align: left">
-                <h3>Workflow</h3>
+              <div
+                style="
+                  background: deepskyblue;
+                  padding: 2px;
+                  text-align: left;
+                  width: 100%;
+                "
+              >
+                <h3>Workflow: {{ workFlowName }}</h3>
               </div>
             </div>
 
@@ -193,6 +212,13 @@
                   <li>
                     <span style="color: darkslategray">
                       <strong>Step {{ ii + 1 }} : </strong>{{ step.StepName }}
+                      <span *ngIf="i === 0 && ii === 0" class="in-progress"
+                        >In-Progress</span
+                      >
+                      <span *ngIf="i !== 0" class="to-do">To-Do</span>
+                      <span *ngIf="i === 0 && ii !== 0" class="to-do"
+                        >To-Do</span
+                      >
                     </span>
                   </li>
                 </ul>
