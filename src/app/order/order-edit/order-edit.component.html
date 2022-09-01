@@ -206,19 +206,19 @@
                 </div>
 
                 <ul
-                  id="list"
+                  class="list"
                   *ngFor="let step of flow.flowSteps; let ii = index"
                 >
                   <li>
                     <span style="color: darkslategray">
                       <strong>Step {{ ii + 1 }} : </strong>{{ step.StepName }}
-                      <span *ngIf="i === 0 && ii === 0" class="in-progress"
-                        >In-Progress</span
-                      >
+                      <span *ngIf="i === 0 && ii === 0" class="in-progress">
+                        In-Progress
+                      </span>
                       <span *ngIf="i !== 0" class="to-do">To-Do</span>
-                      <span *ngIf="i === 0 && ii !== 0" class="to-do"
-                        >To-Do</span
-                      >
+                      <span *ngIf="i === 0 && ii !== 0" class="to-do">
+                        To-Do
+                      </span>
                     </span>
                   </li>
                 </ul>

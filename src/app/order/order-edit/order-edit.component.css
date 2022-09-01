@@ -130,7 +130,7 @@
   padding: 5px 10px 5px 10px;
   font-weight: bold;
   color: white;
-  border-radius: 9%;
+  border-radius: 16px;
 }
 
 .in-progress {
@@ -139,5 +139,5 @@
   font-weight: bold;
   font-weight: bold;
   color: white;
-  border-radius: 9%;
+  border-radius: 16px;
 }
