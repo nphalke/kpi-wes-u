@@ -38,4 +38,8 @@ export class WorkflowService {
         return this.httpClient.post<any>(environment.url + 'workflow', postData);
     }
 
+    public getOrderDetails(id: number): Observable<any[]> {
+        return this.httpClient.get<any[]>(environment.url + 'orderWorkflows/' + id);
+    }
+
 }

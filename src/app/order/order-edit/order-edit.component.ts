@@ -20,7 +20,7 @@ export class OrderEditComponent {
   horizontalPosition: MatSnackBarHorizontalPosition = "end";
   verticalPosition: MatSnackBarVerticalPosition = "top";
   inventories: any[] = [];
-  workFlow: any[] = [];
+  workFlow: any;
   order: any | undefined;
   isOrderExecuted: boolean = false;
   workFlowName: string = '';
@@ -109,9 +109,10 @@ export class OrderEditComponent {
         this.formGroup?.get('InventoryID')?.setValue(this.order.InventoryID);
         this.formGroup?.get('Quantity')?.setValue(this.order.Quantity);
 
-        this.workFlowName = this.order.Name;
+        //this.workFlowName = this.order.Name;
         if (this.order.WorkflowID) {
-          this.getWorkflow(this.order.WorkflowID);
+          // this.getWorkflow(this.order.WorkflowID);
+          this.getOrderDetails(this.order.ID);
         }
       }
     });
@@ -123,21 +124,46 @@ export class OrderEditComponent {
     });
   }
 
-  getWorkflow(id: number): void {
-    this.workflowService.getWorkflow(id).subscribe((response: any) => {
-      this.workFlow = [];
+  // getWorkflow(id: number): void {
+  //   this.workflowService.getWorkflow(id).subscribe((response: any) => {
+  //     this.workFlow = [];
+  //     if (response) {
+  //       this.workFlowName = response.data.Name;
+  //       //this.storageLocation = response.data.ID;
+  //       response.data.WorkflowFlows.forEach((item: any) => {
+  //         // get flow steps for each flow
+  //         if (item.FlowID) {
+  //           this.workflowService.getFlow(item.FlowID)
+  //             .subscribe((flowResponse: any) => {
+  //               this.workFlow.push(flowResponse.data)
+  //             });
+  //         }
+  //       });
+  //     }
+  //   });
+  // }
+
+  getOrderDetails(id: number): void {
+    this.workflowService.getOrderDetails(id).subscribe((response: any) => {
+      //this.workFlow = [];
       if (response) {
-        this.workFlowName = response.data.Name;
-        //this.storageLocation = response.data.ID;
-        response.data.WorkflowFlows.forEach((item: any) => {
-          // get flow steps for each flow
-          if (item.FlowID) {
-            this.workflowService.getFlow(item.FlowID)
-              .subscribe((flowResponse: any) => {
-                this.workFlow.push(flowResponse.data)
-              });
-          }
-        });
+        this.workFlow = response.data;
+        console.log('this.workFlowName', this.workFlow)
+        this.workFlowName = this.workFlow.Name;
+
+        // setTimeout(() => {
+        //   this.workFlow.Workflow_Flows.forEach((flow: any) => {
+        //     flow.flowSteps.forEach((step: any) => {
+        //       if (step.step_status === "In-Progress") {
+        //         step.step_status = "Complete";
+        //       } else if (step.step_status === "To-Do") {
+        //         step.step_status = "In-Progress";
+        //       }
+        //     })
+        //   }
+        //   );
+
+        // }, 2000);
       }
     });
   }

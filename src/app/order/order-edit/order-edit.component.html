@@ -195,10 +195,10 @@
             <div class="example-list">
               <div
                 class="example-box"
-                *ngFor="let flow of workFlow; let i = index"
+                *ngFor="let flow of workFlow.Workflow_Flows; let i = index"
               >
                 <span style="color: black; font-size: 12pt">
-                  <strong>Flow: </strong>{{ flow.Name }}
+                  <strong>Flow: </strong>{{ flow.FlowName }}
                 </span>
 
                 <div style="color: black; font-size: 12pt">
@@ -212,13 +212,23 @@
                   <li>
                     <span style="color: darkslategray">
                       <strong>Step {{ ii + 1 }} : </strong>{{ step.StepName }}
-                      <span *ngIf="i === 0 && ii === 0" class="in-progress">
+                      <span
+                        *ngIf="step.step_status === 'In-Progress'"
+                        class="in-progress"
+                      >
+                        {{ step.step_status }}
+                      </span>
+                      <span *ngIf="step.step_status === 'To-Do'" class="to-do">
+                        {{ step.step_status }}
+                      </span>
+
+                      <!-- <span *ngIf="i === 0 && ii === 0" class="in-progress">
                         In-Progress
                       </span>
                       <span *ngIf="i !== 0" class="to-do">To-Do</span>
                       <span *ngIf="i === 0 && ii !== 0" class="to-do">
                         To-Do
-                      </span>
+                      </span> -->
                     </span>
                   </li>
                 </ul>
