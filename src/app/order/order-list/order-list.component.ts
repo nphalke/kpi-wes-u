@@ -21,7 +21,7 @@ export class OrderListComponent implements DoCheck, OnInit {
     { field: "ID", resizable: true, width: 10 },
     { field: "OrderDateTime", resizable: true, headerName: "Order Date" },
     { field: "OrderType", resizable: true },
-    //{ field: "CustomerName", resizable: true },
+    { field: "WorkflowName", resizable: true },
     //{ field: "ShippingDate", resizable: true }
   ];
 
@@ -37,6 +37,7 @@ export class OrderListComponent implements DoCheck, OnInit {
   // For accessing the Grid's API
   @ViewChild(AgGridAngular) agGrid!: AgGridAngular;
   public isDisabled: boolean = true;
+  public workflowType: string = "";
 
   constructor(
     private router: Router,
@@ -52,6 +53,7 @@ export class OrderListComponent implements DoCheck, OnInit {
     if (this.agGrid) {
 
       if (this.agGrid.api.getSelectedRows().length === 1) {
+        //this.workflowType = this.agGrid.api.getSelectedRows()[0].WorkflowName;
         this.isDisabled = false;
       } else {
         this.isDisabled = true;

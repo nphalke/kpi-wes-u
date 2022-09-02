@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import { ActivatedRoute, ParamMap, Router } from "@angular/router";
 import {
   MatSnackBar,
@@ -9,13 +9,14 @@ import { OrderService } from "../order.service";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import * as _moment from 'moment';
 import { WorkflowService } from "src/app/workflow/workflow.service";
+import { interval, Subject, takeUntil } from "rxjs";
 
 @Component({
   selector: "wes-order-edit",
   templateUrl: "./order-edit.component.html",
   styleUrls: ["./order-edit.component.css"],
 })
-export class OrderEditComponent {
+export class OrderEditComponent implements OnInit, OnDestroy {
   formGroup: FormGroup | undefined;
   horizontalPosition: MatSnackBarHorizontalPosition = "end";
   verticalPosition: MatSnackBarVerticalPosition = "top";
@@ -24,6 +25,7 @@ export class OrderEditComponent {
   order: any | undefined;
   isOrderExecuted: boolean = false;
   workFlowName: string = '';
+  private unsubscribe$: Subject<boolean> = new Subject<boolean>();
 
   constructor(
     private formBuilder: FormBuilder,
@@ -46,6 +48,39 @@ export class OrderEditComponent {
         this.formGroup!.disable()
       }
     });
+
+    interval(2000)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(x => {
+        console.log('.......')
+        for (let i = 0; i < this.workFlow.Workflow_Flows.length; i++) {
+          if (this.workFlow.Workflow_Flows[i].flowSteps) {
+            const index = this.workFlow.Workflow_Flows[i].flowSteps.findIndex((x: any) => x.step_status === 'In-Progress');
+            console.log('index', index)
+            if (index !== -1) {
+              this.workFlow.Workflow_Flows[i].flowSteps[index].step_status = "Completed";
+              if (this.workFlow.Workflow_Flows.length === i + 1) {
+                // this.unsubscribe$.next(true);
+                // this.unsubscribe$.unsubscribe();
+                break;
+              }
+
+              if (this.workFlow.Workflow_Flows[i].flowSteps.length >= index + 1) {
+                if (this.workFlow.Workflow_Flows[i].flowSteps[index + 1]) {
+                  this.workFlow.Workflow_Flows[i].flowSteps[index + 1].step_status = "In-Progress";
+                } else {
+                  if (this.workFlow.Workflow_Flows[i + 1] && this.workFlow.Workflow_Flows[i + 1].flowSteps) {
+                    this.workFlow.Workflow_Flows[i + 1].flowSteps[0].step_status = "In-Progress";
+                  }
+                }
+              }
+              break;
+            }
+
+          }
+
+        }
+      });
   }
 
   createForm() {
@@ -151,20 +186,28 @@ export class OrderEditComponent {
         console.log('this.workFlowName', this.workFlow)
         this.workFlowName = this.workFlow.Name;
 
-        // setTimeout(() => {
-        //   this.workFlow.Workflow_Flows.forEach((flow: any) => {
-        //     flow.flowSteps.forEach((step: any) => {
-        //       if (step.step_status === "In-Progress") {
-        //         step.step_status = "Complete";
-        //       } else if (step.step_status === "To-Do") {
-        //         step.step_status = "In-Progress";
-        //       }
-        //     })
-        //   }
-        //   );
+        // for (let i = 0; i < this.workFlow.Workflow_Flows.length; i++) {
+        //   if (this.workFlow.Workflow_Flows[i].flowSteps) {
+        //     for (let j = 0; j < this.workFlow.Workflow_Flows[i].flowSteps.length; j++) {
+        //       if (this.workFlow.Workflow_Flows[i].flowSteps[j].step_status === "In-Progress") {
 
-        // }, 2000);
+        //         setTimeout(() => {
+        //           this.workFlow.Workflow_Flows[i].flowSteps[j].step_status = "Completed";
+        //           this.workFlow.Workflow_Flows[i].flowSteps[j + 1].step_status = "In-Progress";
+        //         }, 2000);
+
+        //       }
+        //     }
+
+        //   }
+        // }
       }
     });
   }
+
+  ngOnDestroy() {
+    this.unsubscribe$.next(true);
+    this.unsubscribe$.unsubscribe();
+  }
+
 }

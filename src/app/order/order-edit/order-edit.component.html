@@ -221,6 +221,12 @@
                       <span *ngIf="step.step_status === 'To-Do'" class="to-do">
                         {{ step.step_status }}
                       </span>
+                      <span
+                        *ngIf="step.step_status === 'Completed'"
+                        class="complete"
+                      >
+                        {{ step.step_status }}
+                      </span>
 
                       <!-- <span *ngIf="i === 0 && ii === 0" class="in-progress">
                         In-Progress
