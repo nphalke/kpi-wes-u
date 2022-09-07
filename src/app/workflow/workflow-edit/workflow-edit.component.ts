@@ -236,16 +236,18 @@ export class WorkflowEditComponent {
       this.workFlow = [];
       if (response) {
         this.workFlowName = response.data.Name;
+        this.workFlow = response.data.WorkflowFlows;
         //this.storageLocation = response.data.ID;
-        response.data.WorkflowFlows.forEach((item: any) => {
-          // get flow steps for each flow
-          if (item.FlowID) {
-            this.workflowService.getFlow(item.FlowID)
-              .subscribe((flowResponse: any) => {
-                this.workFlow.push(flowResponse.data)
-              });
-          }
-        });
+        // response.data.WorkflowFlows.forEach((item: any) => {
+        //   // get flow steps for each flow
+        //   if (item.FlowID) {
+        //     this.workflowService.getFlow(item.FlowID)
+        //       .subscribe((flowResponse: any) => {
+        //         console.log('flowResponse.data', flowResponse.data)
+        //         this.workFlow.push(flowResponse.data)
+        //       });
+        //   }
+        // });
       }
     });
   }
