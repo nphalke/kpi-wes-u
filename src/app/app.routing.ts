@@ -17,6 +17,18 @@ export const AppRoutes: Routes = [
         loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardModule)
       },
       {
+        path: 'hardware-list',
+        loadChildren: () => import('./hardware/hardware-list/hardware-list.module').then(m => m.HardwareListModule)
+      },
+      {
+        path: 'hardware-edit',
+        loadChildren: () => import('./hardware/hardware-edit/hardware-edit.module').then(m => m.HardwareEditModule)
+      },
+      {
+        path: 'hardware-edit/:id',
+        loadChildren: () => import('./hardware/hardware-edit/hardware-edit.module').then(m => m.HardwareEditModule)
+      },
+      {
         path: 'steps-list',
         loadChildren: () => import('./steps/steps-list/steps-list.module').then(m => m.StepsListModule)
       },

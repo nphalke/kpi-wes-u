@@ -19,93 +19,11 @@ import { WorkflowService } from "../workflow.service";
 })
 export class WorkflowEditComponent {
   flows: any[] = [];
-  // flows: any[] = [
-  //   {
-  //     id: 1,
-  //     flowName: "Carton Erector Build",
-  //     flowSteps: [
-  //       {
-  //         id: 1,
-  //         stepName: 'Hardware Type - Carton Erector - EAGLE T20CF'
-  //       },
-  //       {
-  //         id: 2,
-  //         stepName: 'Hardware Type - Portal - Windows 11'
-  //       },
-  //       {
-  //         id: 3,
-  //         stepName: 'Hardware Type - Scanner - Zebra DS4308-XD (IDENTIFER)'
-  //       }
-  //     ]
-  //   },
-  //   {
-  //     id: 2,
-  //     flowName: "Transport to Picking",
-  //     flowSteps: [
-  //       {
-  //         id: 4,
-  //         stepName: 'Transport - AMR - RARUK MiR1000 (IDENTIFIER)'
-  //       }
-  //     ]
-  //   },
-  //   {
-  //     id: 3,
-  //     flowName: "Heavy Single Line Picking",
-  //     flowSteps: [
-  //       {
-  //         id: 5,
-  //         stepName: 'Hardware Type - Heavy Lifting Arm - Swisslog ItemPiQ'
-  //       }
-  //     ]
-  //   },
-  //   {
-  //     id: 4,
-  //     flowName: "Transport to Packing",
-  //     flowSteps: [
-  //       {
-  //         id: 6, stepName: 'Hardware Type - AMR - RARUK MiR1000 (IDENTIFIER)'
-  //       }
-  //     ]
-  //   },
-  //   {
-  //     id: 5,
-  //     flowName: "PANDA",
-  //     flowSteps: [
-  //       {
-  //         id: 7,
-  //         stepName: 'Hardware Type - Conveyco - Product Name (IDENTIFIER)'
-  //       },
-  //       {
-  //         id: 8,
-  //         stepName: 'Hardware Type - Potal - Windows 11'
-  //       },
-  //       {
-  //         id: 9,
-  //         stepName: 'Hardware Type - Scanner - Zebra DS4308-XD (IDENTIFIER)'
-  //       }
-  //     ]
-  //   },
-  //   {
-  //     id: 6,
-  //     flowName: "Transport to Ship Sorter",
-  //     flowSteps: [
-  //       {
-  //         id: 10,
-  //         stepName: 'Hardware Type - Conveyor - Product Name (IDENTIFIER)'
-  //       }
-  //     ]
-  //   }
-  // ];
-
   workFlowName: string = '';
   workFlow: any[] = [];
   horizontalPosition: MatSnackBarHorizontalPosition = "end";
   verticalPosition: MatSnackBarVerticalPosition = "top";
   storageLocations: any[] = [];
-  //   { id: '1', name: 'Test', buildingNo: "23424", blockNo: "4234" },
-  //   { id: '2', name: 'Loc. No. II', buildingNo: "A-2", blockNo: "B-1B" },
-  //   { id: '3', name: 'Loc. No. III', buildingNo: "A-3", blockNo: "B-1C" }
-  // ];
   public storageLocation: string = '';
   public isSaveDisabled: boolean = false;
 
@@ -163,9 +81,6 @@ export class WorkflowEditComponent {
     if (this.workFlowName === '') {
       message = 'Workflow Title is not defined';
     }
-    // else if (this.storageLocation === '') {
-    //   message = 'Storage Location not selected';
-    // } 
     else if (this.workFlow && this.workFlow.length <= 0) {
       message = 'Workflow is not defined';
     }
@@ -237,17 +152,6 @@ export class WorkflowEditComponent {
       if (response) {
         this.workFlowName = response.data.Name;
         this.workFlow = response.data.WorkflowFlows;
-        //this.storageLocation = response.data.ID;
-        // response.data.WorkflowFlows.forEach((item: any) => {
-        //   // get flow steps for each flow
-        //   if (item.FlowID) {
-        //     this.workflowService.getFlow(item.FlowID)
-        //       .subscribe((flowResponse: any) => {
-        //         console.log('flowResponse.data', flowResponse.data)
-        //         this.workFlow.push(flowResponse.data)
-        //       });
-        //   }
-        // });
       }
     });
   }

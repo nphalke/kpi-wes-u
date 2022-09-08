@@ -13,6 +13,7 @@ const MENUITEMS = [
   { state: 'workflow-list', type: 'link', name: 'Workflows', icon: 'web' },
   { state: 'flow-list', type: 'link', name: 'Flows', icon: 'web' },
   { state: 'steps-list', type: 'link', name: 'Steps', icon: 'web' },
+  { state: 'hardware-list', type: 'link', name: 'Hardwares', icon: 'web' }
 ];
 
 @Injectable()
