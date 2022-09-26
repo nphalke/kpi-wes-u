@@ -1,4 +1,3 @@
-import { HttpClient } from "@angular/common/http";
 import { Component, DoCheck, OnInit, ViewChild } from "@angular/core";
 import { Router } from "@angular/router";
 import { AgGridAngular } from "ag-grid-angular";
@@ -18,10 +17,17 @@ export class OrderListComponent implements DoCheck, OnInit {
       checkboxSelection: true,
       //headerCheckboxSelection: true, // Enable select/unselect all feature
     },
-    { field: "ID", resizable: true, width: 10 },
-    { field: "OrderDateTime", resizable: true, headerName: "Order Date" },
-    { field: "OrderType", resizable: true },
-    { field: "WorkflowName", resizable: true },
+    { field: "ID", resizable: true, headerName: "Order Number" },
+    { field: "", resizable: true, headerName: "Item Number" },
+    { field: "WorkflowName", resizable: true, headerName: "Workflow" },
+    { field: "", resizable: true, headerName: "WF Status" },
+    { field: "", resizable: true, headerName: "Elapsed" },
+    { field: "", resizable: true, headerName: "Flow" },
+    { field: "", resizable: true, headerName: "Flow Step" },
+    { field: "", resizable: true, headerName: "Elapsed" },
+    { field: "", resizable: true, headerName: "Next Flow & Step" },
+    //{ field: "OrderDateTime", resizable: true, headerName: "Order Date" },
+    //{ field: "OrderType", resizable: true },
     //{ field: "ShippingDate", resizable: true }
   ];
 
@@ -79,4 +85,9 @@ export class OrderListComponent implements DoCheck, OnInit {
       this.orders = response.data;
     });
   }
+
+  refresh(): void {
+    this.getOrders();
+  }
+
 }

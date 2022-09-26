@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
+import { Component, OnDestroy, AfterViewInit, OnInit, ViewChild } from "@angular/core";
 import { ActivatedRoute, ParamMap, Router } from "@angular/router";
 import {
   MatSnackBar,
@@ -10,13 +10,21 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import * as _moment from 'moment';
 import { WorkflowService } from "src/app/workflow/workflow.service";
 import { interval, Subject, takeUntil } from "rxjs";
+import { FlatTreeControl } from '@angular/cdk/tree';
+import { MatTree, MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
+
+interface ExampleFlatNode {
+  expandable: boolean;
+  name: string;
+  level: number;
+}
 
 @Component({
   selector: "wes-order-edit",
   templateUrl: "./order-edit.component.html",
   styleUrls: ["./order-edit.component.css"],
 })
-export class OrderEditComponent implements OnInit, OnDestroy {
+export class OrderEditComponent implements AfterViewInit, OnInit, OnDestroy {
   formGroup: FormGroup | undefined;
   horizontalPosition: MatSnackBarHorizontalPosition = "end";
   verticalPosition: MatSnackBarVerticalPosition = "top";
@@ -25,6 +33,168 @@ export class OrderEditComponent implements OnInit, OnDestroy {
   order: any | undefined;
   isOrderExecuted: boolean = false;
   workFlowName: string = '';
+
+  private _transformer = (node: any, level: number) => {
+    return {
+      expandable: !!node.children && node.children.length > 0,
+      name: node.name,
+      level: level,
+    };
+  };
+
+  treeControl = new FlatTreeControl<ExampleFlatNode>(
+    node => node.level,
+    node => node.expandable,
+  );
+
+  treeFlattener = new MatTreeFlattener(
+    this._transformer,
+    node => node.level,
+    node => node.expandable,
+    node => node.children,
+  );
+
+  dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
+  TREE_DATA: any[] = [
+    {
+      name: 'Fruit',
+      children: [
+        { name: 'Apple' },
+        { name: 'Banana' },
+        {
+          name: 'Fruit loops',
+          children: [
+            { name: 'Apple2' },
+            { name: 'Banana2' },
+            {
+              name: 'Fruit loops2',
+              children: [
+                { name: 'Apple3' },
+                { name: 'Banana3' },
+                {
+                  name: 'Fruit loops3',
+                  children: [
+                    { name: 'Apple4' },
+                    { name: 'Banana4' },
+                    {
+                      name: 'Fruit loops4',
+                      children: [
+                        { name: 'Apple5' },
+                        { name: 'Banana5' },
+                        {
+                          name: 'Fruit loops5',
+                          children: [
+                            { name: 'Apple6' },
+                            { name: 'Banana6' },
+                            { name: 'ORDEROO01 ITEMO00002 HML Workflow Processing 0:02:32 AMR HSLP Transport Step 1 - Heavy Lifting Arm AMR AS Transport - Step 1  HML Workflow Processing 0:02:32 AMR HSLP Transport Step 1 - Heavy Lifting Arm AMR AS Transport - Step 1' },
+
+                          ],
+                        },
+
+                      ],
+                    },
+
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+    {
+      name: 'Vegetables',
+      children: [
+        {
+          name: 'Green',
+          children: [{ name: 'Broccoli' }, { name: 'Brussels sprouts' }],
+        },
+        {
+          name: 'Orange',
+          children: [{ name: 'Pumpkins' }, { name: 'Carrots' }],
+        },
+      ],
+    }, {
+      name: 'Vegetables',
+      children: [
+        {
+          name: 'Green',
+          children: [{ name: 'Broccoli' }, { name: 'Brussels sprouts' }],
+        },
+        {
+          name: 'Orange',
+          children: [{ name: 'Pumpkins' }, { name: 'Carrots' }],
+        },
+      ],
+    },
+    {
+      name: 'Vegetables',
+      children: [
+        {
+          name: 'Green',
+          children: [{ name: 'Broccoli' }, { name: 'Brussels sprouts' }],
+        },
+        {
+          name: 'Orange',
+          children: [{ name: 'Pumpkins' }, { name: 'Carrots' }],
+        },
+      ],
+    },
+    {
+      name: 'Vegetables',
+      children: [
+        {
+          name: 'Green',
+          children: [{ name: 'Broccoli' }, { name: 'Brussels sprouts' }],
+        },
+        {
+          name: 'Orange',
+          children: [{ name: 'Pumpkins' }, { name: 'Carrots' }],
+        },
+      ],
+    },
+    {
+      name: 'Vegetables',
+      children: [
+        {
+          name: 'Green',
+          children: [{ name: 'Broccoli' }, { name: 'Brussels sprouts' }],
+        },
+        {
+          name: 'Orange',
+          children: [{ name: 'Pumpkins' }, { name: 'Carrots' }],
+        },
+      ],
+    },
+    {
+      name: 'Vegetables',
+      children: [
+        {
+          name: 'Green',
+          children: [{ name: 'Broccoli' }, { name: 'Brussels sprouts' }],
+        },
+        {
+          name: 'Orange',
+          children: [{ name: 'Pumpkins' }, { name: 'Carrots' }],
+        },
+      ],
+    },
+    {
+      name: 'Vegetables',
+      children: [
+        {
+          name: 'Green',
+          children: [{ name: 'Broccoli' }, { name: 'Brussels sprouts' }],
+        },
+        {
+          name: 'Orange',
+          children: [{ name: 'Pumpkins' }, { name: 'Carrots' }],
+        },
+      ],
+    },
+  ];
+
+
   private unsubscribe$: Subject<boolean> = new Subject<boolean>();
 
   constructor(
@@ -37,6 +207,7 @@ export class OrderEditComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
+    this.dataSource.data = this.TREE_DATA;
     this.getInventory();
     this.createForm();
     this.route.paramMap.subscribe((params: ParamMap) => {
@@ -49,38 +220,44 @@ export class OrderEditComponent implements OnInit, OnDestroy {
       }
     });
 
-    interval(2000)
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(x => {
-        console.log('.......')
-        for (let i = 0; i < this.workFlow.Workflow_Flows.length; i++) {
-          if (this.workFlow.Workflow_Flows[i].flowSteps) {
-            const index = this.workFlow.Workflow_Flows[i].flowSteps.findIndex((x: any) => x.step_status === 'In-Progress');
-            console.log('index', index)
-            if (index !== -1) {
-              this.workFlow.Workflow_Flows[i].flowSteps[index].step_status = "Completed";
-              if (this.workFlow.Workflow_Flows.length === i + 1) {
-                // this.unsubscribe$.next(true);
-                // this.unsubscribe$.unsubscribe();
-                break;
-              }
+    // interval(2000)
+    //   .pipe(takeUntil(this.unsubscribe$))
+    //   .subscribe(x => {
+    //     console.log('.......')
+    //     for (let i = 0; i < this.workFlow.Workflow_Flows.length; i++) {
+    //       if (this.workFlow.Workflow_Flows[i].flowSteps) {
+    //         const index = this.workFlow.Workflow_Flows[i].flowSteps.findIndex((x: any) => x.step_status === 'In-Progress');
+    //         console.log('index', index)
+    //         if (index !== -1) {
+    //           this.workFlow.Workflow_Flows[i].flowSteps[index].step_status = "Completed";
+    //           if (this.workFlow.Workflow_Flows.length === i + 1) {
+    //             // this.unsubscribe$.next(true);
+    //             // this.unsubscribe$.unsubscribe();
+    //             break;
+    //           }
 
-              if (this.workFlow.Workflow_Flows[i].flowSteps.length >= index + 1) {
-                if (this.workFlow.Workflow_Flows[i].flowSteps[index + 1]) {
-                  this.workFlow.Workflow_Flows[i].flowSteps[index + 1].step_status = "In-Progress";
-                } else {
-                  if (this.workFlow.Workflow_Flows[i + 1] && this.workFlow.Workflow_Flows[i + 1].flowSteps) {
-                    this.workFlow.Workflow_Flows[i + 1].flowSteps[0].step_status = "In-Progress";
-                  }
-                }
-              }
-              break;
-            }
+    //           if (this.workFlow.Workflow_Flows[i].flowSteps.length >= index + 1) {
+    //             if (this.workFlow.Workflow_Flows[i].flowSteps[index + 1]) {
+    //               this.workFlow.Workflow_Flows[i].flowSteps[index + 1].step_status = "In-Progress";
+    //             } else {
+    //               if (this.workFlow.Workflow_Flows[i + 1] && this.workFlow.Workflow_Flows[i + 1].flowSteps) {
+    //                 this.workFlow.Workflow_Flows[i + 1].flowSteps[0].step_status = "In-Progress";
+    //               }
+    //             }
+    //           }
+    //           break;
+    //         }
 
-          }
+    //       }
 
-        }
-      });
+    //     }
+    //   });
+  }
+
+  hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
+
+  ngAfterViewInit() {
+    this.treeControl.expandAll();
   }
 
   createForm() {

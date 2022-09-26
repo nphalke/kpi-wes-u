@@ -16,6 +16,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { OrderService } from '../order.service';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatSelectModule } from '@angular/material/select';
+import { MatTreeModule } from '@angular/material/tree';
 
 @NgModule({
   imports: [
@@ -29,6 +30,7 @@ import { MatSelectModule } from '@angular/material/select';
     MatSnackBarModule,
     MatDatepickerModule,
     MatSelectModule,
+    MatTreeModule,
     FormsModule,
     ReactiveFormsModule,
     RouterModule.forChild(OrderEditRoutes)

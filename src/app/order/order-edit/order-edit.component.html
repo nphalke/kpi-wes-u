@@ -11,116 +11,81 @@
             </button>
           </div>
         </section>
+        <div>
+          <form
+            [formGroup]="formGroup"
+            style="width: 66%; display: inline-block"
+          >
+            <div class="example-container">
+              <mat-form-field class="form-element">
+                <mat-label>Order Id</mat-label>
+                <input matInput placeholder="" formControlName="ID" />
+              </mat-form-field>
 
-        <form [formGroup]="formGroup">
-          <div class="example-container">
-            <mat-form-field class="form-element">
-              <mat-label>Order Id</mat-label>
-              <input matInput placeholder="" formControlName="ID" />
-            </mat-form-field>
-
-            <mat-form-field class="form-element">
-              <mat-label>Order Type</mat-label>
-              <input matInput required formControlName="OrderType" />
-            </mat-form-field>
-            <div
-              *ngIf="
-                OrderType?.invalid && (OrderType?.dirty || OrderType?.touched)
-              "
-              class="alert-danger"
-            >
-              <div *ngIf="OrderType?.errors.required">
-                Order Type is required.
+              <mat-form-field class="form-element">
+                <mat-label>Order Type</mat-label>
+                <input matInput required formControlName="OrderType" />
+              </mat-form-field>
+              <div
+                *ngIf="
+                  OrderType?.invalid && (OrderType?.dirty || OrderType?.touched)
+                "
+                class="alert-danger"
+              >
+                <div *ngIf="OrderType?.errors.required">
+                  Order Type is required.
+                </div>
               </div>
+
+              <mat-form-field class="example-full-width" appearance="fill">
+                <mat-label>Inventory</mat-label>
+                <mat-select formControlName="InventoryID">
+                  <mat-option
+                    *ngFor="let item of inventories"
+                    [value]="item.ID"
+                  >
+                    {{ item.Name }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <section *ngIf="!isOrderExecuted">
+                <div class="example-button-row">
+                  <button mat-raised-button color="accent" (click)="save()">
+                    Submit Order
+                  </button>
+                </div>
+              </section>
             </div>
 
-            <mat-form-field class="example-full-width" appearance="fill">
-              <mat-label>Inventory</mat-label>
-              <mat-select formControlName="InventoryID">
-                <mat-option *ngFor="let item of inventories" [value]="item.ID">
-                  {{ item.Name }}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
+            <div class="example-container">
+              <mat-form-field>
+                <mat-label>Order Date</mat-label>
+                <input
+                  matInput
+                  [matDatepicker]="picker"
+                  formControlName="OrderDateTime"
+                />
+                <mat-datepicker-toggle
+                  matSuffix
+                  [for]="picker"
+                ></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+              </mat-form-field>
 
-            <!-- <mat-form-field class="form-element">
-              <mat-label>Customer</mat-label>
-              <input
-                matInput
-                required
-                formControlName="CustomerName"
-                value=""
-              />
-            </mat-form-field>
-            <div
-              *ngIf="
-                CustomerName?.invalid &&
-                (CustomerName?.dirty || CustomerName?.touched)
-              "
-              class="alert-danger"
-            >
-              <div *ngIf="CustomerName?.errors.required">
-                Customer is required.
+              <div
+                *ngIf="
+                  OrderDateTime?.invalid &&
+                  (OrderDateTime?.dirty || OrderDateTime?.touched)
+                "
+                class="alert-danger"
+              >
+                <div *ngIf="OrderDateTime?.errors.required">
+                  Order Date is required.
+                </div>
               </div>
-            </div> -->
 
-            <!-- <mat-form-field class="form-element">
-              <mat-label> Customer Address </mat-label>
-              <textarea
-                matInput
-                rows="2"
-                formControlName="CustomerAddress"
-              ></textarea>
-            </mat-form-field>
-            <div
-              *ngIf="
-                CustomerAddress?.invalid &&
-                (CustomerAddress?.dirty || CustomerAddress?.touched)
-              "
-              class="alert-danger"
-            >
-              <div *ngIf="CustomerAddress?.errors.required">
-                Customer Address is required.
-              </div>
-            </div> -->
-
-            <section *ngIf="!isOrderExecuted">
-              <div class="example-button-row">
-                <button mat-raised-button color="accent" (click)="save()">
-                  Submit Order
-                </button>
-              </div>
-            </section>
-          </div>
-
-          <div class="example-container">
-            <mat-form-field>
-              <mat-label>Order Date</mat-label>
-              <input
-                matInput
-                [matDatepicker]="picker"
-                formControlName="OrderDateTime"
-              />
-              <mat-datepicker-toggle
-                matSuffix
-                [for]="picker"
-              ></mat-datepicker-toggle>
-              <mat-datepicker #picker></mat-datepicker>
-            </mat-form-field>
-
-            <div
-              *ngIf="
-                OrderDateTime?.invalid &&
-                (OrderDateTime?.dirty || OrderDateTime?.touched)
-              "
-              class="alert-danger"
-            >
-              <div *ngIf="OrderDateTime?.errors.required">
-                Order Date is required.
-              </div>
-            </div>
-
-            <!-- <mat-form-field>
+              <!-- <mat-form-field>
               <mat-label>Shipping Date</mat-label>
               <input
                 matInput
@@ -146,7 +111,7 @@
               </div>
             </div> -->
 
-            <!-- <mat-form-field class="example-full-width" appearance="fill">
+              <!-- <mat-form-field class="example-full-width" appearance="fill">
               <mat-label>Inventory</mat-label>
               <mat-select formControlName="InventoryID">
                 <mat-option *ngFor="let item of inventories" [value]="item.ID">
@@ -155,25 +120,141 @@
               </mat-select>
             </mat-form-field> -->
 
-            <mat-form-field class="form-element">
-              <mat-label>Quantity</mat-label>
-              <input
-                matInput
-                required
-                formControlName="Quantity"
-                value=""
-                type="number"
-              />
-            </mat-form-field>
-            <div
-              *ngIf="
-                Quantity?.invalid && (Quantity?.dirty || Quantity?.touched)
-              "
-              class="alert-danger"
-            >
-              <div *ngIf="Quantity?.errors.required">Quantity is required.</div>
+              <mat-form-field class="form-element">
+                <mat-label>Quantity</mat-label>
+                <input
+                  matInput
+                  required
+                  formControlName="Quantity"
+                  value=""
+                  type="number"
+                />
+              </mat-form-field>
+              <div
+                *ngIf="
+                  Quantity?.invalid && (Quantity?.dirty || Quantity?.touched)
+                "
+                class="alert-danger"
+              >
+                <div *ngIf="Quantity?.errors.required">
+                  Quantity is required.
+                </div>
+              </div>
             </div>
-          </div>
+
+            <div class="logs" *ngIf="isOrderExecuted && workFlowName !== ''">
+              <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
+                <!-- This is the tree node template for leaf nodes -->
+                <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
+                  <!-- use a disabled button to provide padding for tree leaf -->
+                  <!-- <button mat-icon-button disabled></button> -->
+                  <mat-icon>
+                    {{
+                      treeControl.isExpanded(node)
+                        ? "chevron_right"
+                        : "chevron_right"
+                    }}
+                  </mat-icon>
+                  {{ node.name }}
+                </mat-tree-node>
+                <!-- This is the tree node template for expandable nodes -->
+                <mat-tree-node
+                  *matTreeNodeDef="let node; when: hasChild"
+                  matTreeNodePadding
+                >
+                  <!-- <button
+                    mat-icon-button
+                    matTreeNodeToggle
+                    [attr.aria-label]="'Toggle ' + node.name"
+                  >
+                    <mat-icon class="mat-icon-rtl-mirror">
+                      {{
+                        treeControl.isExpanded(node)
+                          ? "chevron_right"
+                          : "chevron_right"
+                      }}
+                    </mat-icon>
+                  </button> -->
+
+                  <mat-icon class="mat-icon-rtl-mirror">
+                    {{
+                      treeControl.isExpanded(node)
+                        ? "chevron_right"
+                        : "chevron_right"
+                    }}
+                  </mat-icon>
+                  {{ node.name }}
+                </mat-tree-node>
+              </mat-tree>
+
+              <!-- <ul>
+                <li>
+                  Order Number Item Number Workflow WF Status Elapsed Elapsed
+                  Next Flow & Step
+                </li>
+                <li>
+                  ORDEROO01 ITEMO00002 HML Workflow Processing 0:02:32 AMR HSLP Transport Step 1 - Heavy Lifting Arm AMR AS Transport - Step 1
+                </li>
+                <li>
+                  ORDEROOO2 ITEMO00003 HSL Workflow Processing 0:00:17 Carton
+                  Erector Step 1 - Carton Erector 0:00:12 AMR HSLP Transport -
+                  Step 1
+                </li>
+                <li>
+                  ORDEROOO3 ITEMO000001 HSL Workflow Cancelled 0:03:05 Heavy
+                  Single Line Picker Step 1 - Heavy Lifting Arm AMR Put Away
+                  Transport - Step 1 Pick
+                </li>
+                <li>
+                  ORDEROO04 ITEMO00004 HSL Workflow Pending 0:06:12 Carton
+                  Erector Step 1 - Carton Erector 0:00:00 Carton Erector - Step
+                  2
+                </li>
+                <li>
+                  ORDEROOO! received from External system (Order Type: Picking,
+                  Items: ITEM000001 & ITEM000002)
+                </li>
+                <li>WESEC locating Inventory</li>
+                <li>
+                  WESEC located item ITEM000001 in Storage Location SLRCK0000001
+                  (Hardware: Heavy Lifting Arm, Flow: Heavy Single Line Picker)
+                </li>
+                <li>
+                  WESEC located item ITEM000002 in Storage Location SLAS0099999
+                  (Hardware: AutoStore, Flow: AutoStore)
+                </li>
+                <li>
+                  WESEC Identified Heavy Multi Line Workflow to pick item(s)
+                  ITEM000001 & ITEM000002
+                </li>
+                <li>WESFC started Heavy Multi Line Workflow</li>
+                <li>WESFC started flow Carton Erector</li>
+                <li>
+                  WESFC sent command to Robotics Hub for hardware Carton Erector
+                  (192.168.1.47)
+                </li>
+                <li>Received Response Robotics Hub (Success)</li>
+                <li>Portal Scan of LPN SLCRT000003475 complete</li>
+                <li>WESFC started flow AMR HSLP Transport</li>
+                <li>
+                  WESFC sent command to Robotics Hub for hardware AMR
+                  (192.168.1.83)
+                </li>
+                <li>Received Response Robotics Hub (Success)</li>
+                <li>AMR Scan of LPN SLCRT000003475 complete</li>
+                <li>
+                  Received Response Robotics Hub from hardware AMR (Complete)
+                </li>
+                <li>WESFC started flow Heavy Single Line Picker</li>
+                <li>
+                  WESEC sent command to Robotics Hub for hardware Heavy Lifting
+                  Arm (192.168.1.83)
+                </li>
+                <li>Received Response Robotics Hub (Success)</li>
+                <li>Received Manual Complete from WES Operations</li>
+              </ul> -->
+            </div>
+          </form>
 
           <div
             class="example-container"
@@ -212,7 +293,7 @@
                   <li>
                     <span style="color: darkslategray">
                       <strong>Step {{ ii + 1 }} : </strong>{{ step.StepName }}
-                      <span
+                      <!-- <span
                         *ngIf="step.step_status === 'In-Progress'"
                         class="in-progress"
                       >
@@ -226,14 +307,6 @@
                         class="complete"
                       >
                         {{ step.step_status }}
-                      </span>
-
-                      <!-- <span *ngIf="i === 0 && ii === 0" class="in-progress">
-                        In-Progress
-                      </span>
-                      <span *ngIf="i !== 0" class="to-do">To-Do</span>
-                      <span *ngIf="i === 0 && ii !== 0" class="to-do">
-                        To-Do
                       </span> -->
                     </span>
                   </li>
@@ -241,7 +314,7 @@
               </div>
             </div>
           </div>
-        </form>
+        </div>
       </mat-card-content>
     </mat-card>
   </div>

@@ -150,3 +150,18 @@
   color: white;
   border-radius: 16px;
 }
+
+.logs {
+  display: inline-block;
+  border: 1px solid #ccc;
+  width: 95%;
+  padding: 10px;
+  border-radius: 5px;
+  overflow-y: scroll;
+  height: 700px;
+}
+
+.mat-tree-node {
+  min-height: 20px !important;
+  /* padding-left: 40px !important; */
+}
