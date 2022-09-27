@@ -141,8 +141,16 @@
                 </div>
               </div>
             </div>
-
-            <div class="logs" *ngIf="isOrderExecuted && workFlowName !== ''">
+            <div
+              class="logs"
+              *ngIf="
+                isOrderExecuted &&
+                workFlowName !== '' &&
+                this.dataSource &&
+                this.dataSource.data &&
+                this.dataSource.data.length > 0
+              "
+            >
               <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
                 <!-- This is the tree node template for leaf nodes -->
                 <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>

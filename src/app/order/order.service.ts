@@ -24,4 +24,8 @@ export class OrderService {
     public saveOrder(postData: any): Observable<any> {
         return this.httpClient.post<any>(environment.url + 'order', postData);
     }
+
+    public getLogs(id: number): Observable<any[]> {
+        return this.httpClient.get<any[]>(environment.url + 'logs/' + id);
+    }
 }

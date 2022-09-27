@@ -207,7 +207,7 @@ export class OrderEditComponent implements AfterViewInit, OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.dataSource.data = this.TREE_DATA;
+    // this.dataSource.data = this.TREE_DATA;
     this.getInventory();
     this.createForm();
     this.route.paramMap.subscribe((params: ParamMap) => {
@@ -257,7 +257,7 @@ export class OrderEditComponent implements AfterViewInit, OnInit, OnDestroy {
   hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
 
   ngAfterViewInit() {
-    this.treeControl.expandAll();
+    // this.treeControl.expandAll();
   }
 
   createForm() {
@@ -325,6 +325,7 @@ export class OrderEditComponent implements AfterViewInit, OnInit, OnDestroy {
         if (this.order.WorkflowID) {
           // this.getWorkflow(this.order.WorkflowID);
           this.getOrderDetails(this.order.ID);
+          this.getLogs(this.order.ID);
         }
       }
     });
@@ -379,6 +380,14 @@ export class OrderEditComponent implements AfterViewInit, OnInit, OnDestroy {
         //   }
         // }
       }
+    });
+  }
+
+  getLogs(id: number): void {
+    this.orderService.getLogs(id).subscribe((response: any) => {
+      console.log('getLogs', [response.data])
+      this.dataSource.data = [response.data];
+      this.treeControl.expandAll();
     });
   }
 
