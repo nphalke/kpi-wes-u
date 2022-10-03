@@ -217,17 +217,25 @@ export class OrderEditComponent implements AfterViewInit, OnInit, OnDestroy {
         this.getOrder(id);
         this.isOrderExecuted = true;
         this.formGroup!.disable()
+        this.getLogs(id);
+        // get order workflow logs
+        interval(5000)
+          .pipe(takeUntil(this.unsubscribe$))
+          .subscribe(x => {
+            this.getLogs(id);
+          });
+
       }
     });
 
     // interval(2000)
     //   .pipe(takeUntil(this.unsubscribe$))
     //   .subscribe(x => {
-    //     console.log('.......')
+    //     // console.log('.......')
     //     for (let i = 0; i < this.workFlow.Workflow_Flows.length; i++) {
     //       if (this.workFlow.Workflow_Flows[i].flowSteps) {
     //         const index = this.workFlow.Workflow_Flows[i].flowSteps.findIndex((x: any) => x.step_status === 'In-Progress');
-    //         console.log('index', index)
+    //         // console.log('index', index)
     //         if (index !== -1) {
     //           this.workFlow.Workflow_Flows[i].flowSteps[index].step_status = "Completed";
     //           if (this.workFlow.Workflow_Flows.length === i + 1) {
@@ -325,7 +333,7 @@ export class OrderEditComponent implements AfterViewInit, OnInit, OnDestroy {
         if (this.order.WorkflowID) {
           // this.getWorkflow(this.order.WorkflowID);
           this.getOrderDetails(this.order.ID);
-          this.getLogs(this.order.ID);
+          // this.getLogs(this.order.ID);
         }
       }
     });
@@ -361,7 +369,7 @@ export class OrderEditComponent implements AfterViewInit, OnInit, OnDestroy {
       //this.workFlow = [];
       if (response) {
         this.workFlow = response.data;
-        console.log('this.workFlowName', this.workFlow)
+        // console.log('this.workFlowName', this.workFlow)
         this.workFlowName = this.workFlow.Name;
 
         // for (let i = 0; i < this.workFlow.Workflow_Flows.length; i++) {
@@ -385,7 +393,7 @@ export class OrderEditComponent implements AfterViewInit, OnInit, OnDestroy {
 
   getLogs(id: number): void {
     this.orderService.getLogs(id).subscribe((response: any) => {
-      console.log('getLogs', [response.data])
+      // console.log('getLogs', [response.data])
       this.dataSource.data = [response.data];
       this.treeControl.expandAll();
     });

@@ -1,7 +1,9 @@
-import { Component, DoCheck, OnInit, ViewChild } from "@angular/core";
+import { Component, DoCheck, OnInit, OnDestroy, ViewChild } from "@angular/core";
 import { Router } from "@angular/router";
 import { AgGridAngular } from "ag-grid-angular";
 import { ColDef, GridReadyEvent } from "ag-grid-community";
+import { interval, Subject, takeUntil } from "rxjs";
+import { WorkflowService } from "src/app/workflow/workflow.service";
 import { OrderService } from "../order.service";
 
 @Component({
@@ -9,7 +11,7 @@ import { OrderService } from "../order.service";
   templateUrl: "./order-list.component.html",
   styleUrls: ["./order-list.component.css"],
 })
-export class OrderListComponent implements DoCheck, OnInit {
+export class OrderListComponent implements DoCheck, OnInit, OnDestroy {
   // Each Column Definition results in one Column.
   public columnDefs: ColDef[] = [
     {
@@ -18,14 +20,14 @@ export class OrderListComponent implements DoCheck, OnInit {
       //headerCheckboxSelection: true, // Enable select/unselect all feature
     },
     { field: "ID", resizable: true, headerName: "Order Number" },
-    { field: "", resizable: true, headerName: "Item Number" },
+    { field: "ItemName", resizable: true, headerName: "Item" },
     { field: "WorkflowName", resizable: true, headerName: "Workflow" },
-    { field: "", resizable: true, headerName: "WF Status" },
-    { field: "", resizable: true, headerName: "Elapsed" },
-    { field: "", resizable: true, headerName: "Flow" },
-    { field: "", resizable: true, headerName: "Flow Step" },
-    { field: "", resizable: true, headerName: "Elapsed" },
-    { field: "", resizable: true, headerName: "Next Flow & Step" },
+    { field: "WorkflowStatus", resizable: true, headerName: "WF Status" },
+    { field: "Elapsed", resizable: true, headerName: "Elapsed" },
+    { field: "FlowName", resizable: true, headerName: "Flow" },
+    { field: "CurrentFlowStep", resizable: true, headerName: "Flow Step" },
+    { field: "StepElapsed", resizable: true, headerName: "Elapsed" },
+    { field: "NextFlowStep", resizable: true, headerName: "Next Flow & Step" },
     //{ field: "OrderDateTime", resizable: true, headerName: "Order Date" },
     //{ field: "OrderType", resizable: true },
     //{ field: "ShippingDate", resizable: true }
@@ -44,15 +46,22 @@ export class OrderListComponent implements DoCheck, OnInit {
   @ViewChild(AgGridAngular) agGrid!: AgGridAngular;
   public isDisabled: boolean = true;
   public workflowType: string = "";
+  private unsubscribe$: Subject<boolean> = new Subject<boolean>();
 
   constructor(
     private router: Router,
-    private orderService: OrderService
+    private orderService: OrderService,
+    private workflowService: WorkflowService
   ) {
   }
 
   ngOnInit() {
     this.getOrders();
+    interval(5000)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(x => {
+        this.getOrders();
+      });
   }
 
   ngDoCheck() {
@@ -83,11 +92,31 @@ export class OrderListComponent implements DoCheck, OnInit {
   getOrders(): void {
     this.orderService.getOrders().subscribe((response: any) => {
       this.orders = response.data;
+      // console.log('this.orders', this.orders)
+
+      // for (let i = 0; i < this.orders.length; i++) {
+      //   this.getOrderDetails(this.orders[i].WorkflowID, i);
+      // }
     });
   }
 
+  // getOrderDetails(workflowID: number, index: number): void {
+  //   this.workflowService.getOrderDetails(workflowID).subscribe((response: any) => {
+  //     if (response) {
+  //       // console.log('getOrderDetails', response.data)
+  //       this.orders[index].WorkflowDetails = response.data
+  //       // console.log('getOrderDetails-> this.orders', this.orders[index])
+  //     }
+  //   });
+  // }
+
   refresh(): void {
     this.getOrders();
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe$.next(true);
+    this.unsubscribe$.unsubscribe();
   }
 
 }
