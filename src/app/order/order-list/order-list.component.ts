@@ -57,7 +57,7 @@ export class OrderListComponent implements DoCheck, OnInit, OnDestroy {
 
   ngOnInit() {
     this.getOrders();
-    interval(5000)
+    interval(3000)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(x => {
         this.getOrders();
