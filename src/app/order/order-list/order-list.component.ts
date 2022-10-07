@@ -27,10 +27,7 @@ export class OrderListComponent implements DoCheck, OnInit, OnDestroy {
     { field: "FlowName", resizable: true, headerName: "Flow" },
     { field: "CurrentFlowStep", resizable: true, headerName: "Flow Step" },
     { field: "StepElapsed", resizable: true, headerName: "Elapsed" },
-    { field: "NextFlowStep", resizable: true, headerName: "Next Flow & Step" },
-    //{ field: "OrderDateTime", resizable: true, headerName: "Order Date" },
-    //{ field: "OrderType", resizable: true },
-    //{ field: "ShippingDate", resizable: true }
+    { field: "NextFlowStep", resizable: true, headerName: "Next Flow & Step" }
   ];
 
   // DefaultColDef sets props common to all Columns
@@ -66,9 +63,7 @@ export class OrderListComponent implements DoCheck, OnInit, OnDestroy {
 
   ngDoCheck() {
     if (this.agGrid) {
-
       if (this.agGrid.api.getSelectedRows().length === 1) {
-        //this.workflowType = this.agGrid.api.getSelectedRows()[0].WorkflowName;
         this.isDisabled = false;
       } else {
         this.isDisabled = true;
@@ -92,23 +87,8 @@ export class OrderListComponent implements DoCheck, OnInit, OnDestroy {
   getOrders(): void {
     this.orderService.getOrders().subscribe((response: any) => {
       this.orders = response.data;
-      // console.log('this.orders', this.orders)
-
-      // for (let i = 0; i < this.orders.length; i++) {
-      //   this.getOrderDetails(this.orders[i].WorkflowID, i);
-      // }
     });
   }
-
-  // getOrderDetails(workflowID: number, index: number): void {
-  //   this.workflowService.getOrderDetails(workflowID).subscribe((response: any) => {
-  //     if (response) {
-  //       // console.log('getOrderDetails', response.data)
-  //       this.orders[index].WorkflowDetails = response.data
-  //       // console.log('getOrderDetails-> this.orders', this.orders[index])
-  //     }
-  //   });
-  // }
 
   refresh(): void {
     this.getOrders();
@@ -118,5 +98,4 @@ export class OrderListComponent implements DoCheck, OnInit, OnDestroy {
     this.unsubscribe$.next(true);
     this.unsubscribe$.unsubscribe();
   }
-
 }
